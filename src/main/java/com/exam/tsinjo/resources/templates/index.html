@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tsinjo - Fonds d'urgence HEI</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        .form-section, .history-section { border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; }
+        h1, h2 { text-align: center; }
+        form div { margin-bottom: 10px; }
+        label { display: inline-block; width: 150px; }
+        input[type="text"], input[type="email"], input[type="number"] { width: 300px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Tsinjo - Fonds d'urgence HEI</h1>
+
+    <div class="form-section">
+        <h2>Faire un don</h2>
+        <form action="/donations" method="post">
+            <div>
+                <label for="donorName">Nom complet du donateur:</label>
+                <input type="text" id="donorName" name="donorName" required>
+            </div>
+            <div>
+                <label for="donorEmail">Email du donateur:</label>
+                <input type="email" id="donorEmail" name="donorEmail" required>
+            </div>
+            <div>
+                <label for="pspPaymentId">ID de paiement (Vola):</label>
+                <input type="text" id="pspPaymentId" name="pspPaymentId" required>
+            </div>
+            <div>
+                <label for="amount">Montant (en Ariary):</label>
+                <input type="number" id="amount" name="amount" min="1" required>
+            </div>
+            <div>
+                <button type="submit">Soumettre le don</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="history-section">
+        <h2>Historique des transactions</h2>
+
+        <h3>Dons (Entrées d'argent)</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Donateur</th>
+                <th>Email</th>
+                <th>Montant</th>
+                <th>Statut</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="donation : ${donations}">
+                <td th:text="${donation.creationDatetime}"></td>
+                <td th:text="${donation.donor.fullName}"></td>
+                <td th:text="${donation.donor.email}"></td>
+                <td th:text="${donation.payment.amount}"></td>
+                <td th:text="${donation.payment.status}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3>Aides (Sorties d'argent)</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Bénéficiaire</th>
+                <th>Email</th>
+                <th>Montant</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="help : ${helps}">
+                <td th:text="${help.creationDatetime}"></td>
+                <td th:text="${help.beneficiary.fullName}"></td>
+                <td th:text="${help.beneficiary.email}"></td>
+                <td th:text="${help.amount}"></td>
+                <td th:text="${help.description}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
